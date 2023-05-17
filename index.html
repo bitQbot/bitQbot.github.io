@@ -10,37 +10,27 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="./resource/vanillajs-table.js"></script>
+    <link
+      href="https://unpkg.com/tabulator-tables@5.4.4/dist/css/tabulator.min.css"
+      rel="stylesheet"
+    />
+    <script
+      type="text/javascript"
+      src="https://unpkg.com/tabulator-tables@5.4.4/dist/js/tabulator.min.js"
+    ></script>
   </head>
   <body style="font-family: 'Noto Sans KR', sans-serif">
-    <style>
-      table {
-        border: 1px solid #c8c8c8;
-        width: 100%;
-      }
-      tr {
-        display: table;
-        width: 100%;
-        box-sizing: border-box;
-      }
-
-      th,
-      td {
-        border: 1px solid #c8c8c8;
-        padding: 3px 10px;
-      }
-    </style>
     <div>
       <div class="container max-w-screen-sm mx-auto p-4">
         <a href="/" class="flex flex-row items-center"
-          ><img src="./resource/logo.png" class="w-12 h-12 rounded-full" />
+          ><img src="./resource/logo.png" class="w-24 h-24 rounded-full" />
           <p class="ml-2 font-bold text-gray-700 text-lg">BitQBot</p>
         </a>
       </div>
     </div>
 
     <div class="container max-w-screen-sm mx-auto p-4">
-      <div class="text-gray-600 bg-gray-100 rounded-2xl p-6">
+      <div class="text-gray-600 bg-gray-100 text-sm rounded-2xl p-6">
         BitQBot은 개인 프로젝트로 강화학습 Q-learning을 활용한 비트코인 자동
         매매 봇입니다.
       </div>
@@ -49,37 +39,52 @@
 
       <div class="my-2 flex flex-row items-center">
         <h1 class="text-2xl text-gray-700 font-bold">거래 결과</h1>
-        <span class="ml-2 bg-sky-500 text-white p-1 rounded-lg text-sm"
-          >23.05.13</span
+        <span class="ml-2 bg-gray-500 text-white p-1 rounded-lg text-sm"
+          >23.05.03 ~ 05.04</span
+        >
+        <span class="ml-2 bg-red-500 text-white p-1 rounded-lg text-sm"
+          >+24000원 차익</span
         >
       </div>
-      <hr />
-      <div id="table_trade_history"></div>
+
+      <img src="./resource/data/230503.png" class="my-4" />
+
+      <p class="text-gray-500 text-sm">
+        * 5000번째 모델이 생성한 Q-table을 기반으로 거래를 수행한 결과입니다.<br />
+        ** 23.05.03 17:21 ~ 23.05.04 00:00 사이의 분당 데이터를 기반으로
+        학습하였습니다.
+      </p>
+
+      <p class="text-gray-500 text-sm">
+        *** action : 1은 매수, 2는 매도를 의미합니다.
+        <br />
+        **** 테이블 라이브러리 :
+        <a href="https://tabulator.info/" class="text-blue-600">tabulator</a>
+      </p>
+      <br />
+      <div id="example-table"></div>
 
       <br />
       <div class="my-2 flex flex-row items-center">
         <h1 class="text-2xl text-gray-700 font-bold">학습 결과</h1>
-        <span class="ml-2 bg-blue-500 text-white p-1 rounded-lg text-sm"
-          >23.05.15</span
-        >
       </div>
-
-      <hr />
 
       <img src="./resource/data/230515.png" />
 
       <hr />
-      <div class="items-center content-center text-gray-600">
+      <div class="py-6 items-center content-center text-gray-600 text-sm">
         숭실대학교 23년 1학기 컴퓨터공학특강 개인 프로젝트입니다.
-        <a href="https://github.com/hanarotg">@hanarotg</a>
+        <a href="https://github.com/hanarotg" class="text-blue-600"
+          >@TaeGyeong Lee</a
+        >
       </div>
     </div>
   </body>
 </html>
 
 <script>
-  var trade_history = [
-    {},
+  //define data array
+  var tabledata = [
     { action: 1, price: 38229000, time: "2023-05-03T17:21:00+00:00" },
     { action: 2, price: 38209000, time: "2023-05-03T17:22:00+00:00" },
     { action: 1, price: 38372000, time: "2023-05-03T17:24:00+00:00" },
@@ -179,10 +184,11 @@
     { action: 1, price: 38682000, time: "2023-05-03T23:45:00+00:00" },
     { action: 2, price: 38706000, time: "2023-05-03T23:49:00+00:00" },
   ];
-  var options = {
-    element: document.getElementById("table_trade_history"),
-    data: trade_history,
-  };
-  var table = new Table(options);
-  table.view();
+
+  //initialize table
+  var table = new Tabulator("#example-table", {
+    data: tabledata, //assign data to table
+    autoColumns: true, //create columns from data field names
+    layout: "fitDataFill",
+  });
 </script>
